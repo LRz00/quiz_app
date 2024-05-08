@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'helper.dart';
 
+Helper helper = Helper();
 void main() => runApp(QuizApp());
 
 class QuizApp extends StatelessWidget {
@@ -9,7 +11,7 @@ class QuizApp extends StatelessWidget {
       home: Scaffold(
         body: SafeArea(
           child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: 10.0),
+            padding: const EdgeInsets.symmetric(horizontal: 10.0),
             child: QuizPage(),
           ),
         ),
@@ -24,6 +26,9 @@ class QuizPage extends StatefulWidget {
 }
 
 class _QuizPageState extends State<QuizPage> {
+  List<Widget> points = [];
+
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -36,7 +41,7 @@ class _QuizPageState extends State<QuizPage> {
             padding: EdgeInsets.all(10.0),
             child: Center(
               child: Text(
-                'As perguntas serão exibidas aqui.',
+                helper.getQuestion(),//Pergunta
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   fontSize: 25.0,
@@ -47,10 +52,10 @@ class _QuizPageState extends State<QuizPage> {
         ),
         Expanded(
           child: Padding(
-            padding: EdgeInsets.all(15.0),
+            padding: const EdgeInsets.all(15.0),
             child: TextButton(
-               style: TextButton.styleFrom(backgroundColor: Colors.white),          
-              child: Text(
+              style: TextButton.styleFrom(backgroundColor: Colors.grey),
+              child: const Text(
                 'Verdadeiro',
                 style: TextStyle(
                   color: Colors.deepPurple,
@@ -58,37 +63,46 @@ class _QuizPageState extends State<QuizPage> {
                 ),
               ),
               onPressed: () {
-                //O usuário clica no botão verdadeiro.
+                setState(() {
+                  bool rightAnswer = helper.getAnswer();
+                  if (rightAnswer == true) {
+                    //acertou
+                  } else {
+                    //errou
+                  }
+                  helper.nextQuestion();
+                });
               },
             ),
           ),
         ),
         Expanded(
           child: Padding(
-            padding: EdgeInsets.all(15.0),
+            padding: const EdgeInsets.all(15.0),
             child: TextButton(
-              style: TextButton.styleFrom(backgroundColor: Colors.grey),
-              child: Text(
+              style: TextButton.styleFrom(backgroundColor: Colors.deepPurple),
+              child: const Text(
                 'Falso',
-                style: TextStyle(
-                  fontSize: 20.0,
-                  color: Colors.white,
-                ),
+                style: TextStyle(fontSize: 20.0, color: Colors.white),
               ),
               onPressed: () {
-                //O usuário clica no botão falso.
+                setState(() {
+                  bool rightAnswer = helper.getAnswer();
+                  if (rightAnswer == false) {
+                    //acertou
+                  } else {
+                    //errou
+                  }
+                  helper.nextQuestion();
+                });
               },
             ),
           ),
         ),
-        //TODO: Adicionar uma Row aqui para o marcador de pontos.
+        Row(
+          children: points,
+        )
       ],
     );
   }
 }
-
-/*
-pergunta1: 'O metrô é um dos meios de transporte mais seguros do mundo', verdadeiro,
-pergunta2: 'A culinária brasileira é uma das melhores do mundo.', verdadeiro,
-pergunta3: 'Vacas podem voar, assim como peixes utilizam os pés para andar.', falso,
-*/

@@ -27,9 +27,14 @@ class Helper{
     return _q[_i].answer;
   }
 
-  void nextQuestion(){
-    if(_i < _q.length - 1){
+  bool nextQuestion(){
+     if(_i < _q.length - 1) {
       _i++;
-    }
-  }
+
+      return true;
+    } 
+
+    _i = 0;
+    return false;
+}
 }
